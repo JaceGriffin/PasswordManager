@@ -2,7 +2,9 @@ org 100h
 
 
 call view
+ 
 
+end_of_prog:
 
 mov ah, 0
 int 16h
@@ -22,7 +24,6 @@ proc view
     mov dx, offset data_filename
     int 21h
     
-    ;TD: handle file not found
     ;read from file
     mov bx, ax
     mov cx, 100
@@ -34,7 +35,19 @@ proc view
     mov ah, 9
     int 21h    
     ret
-endp view   
+    
+    ;close file
+    mov ah, 3Eh
+    int 21h
+endp view
+
+
+proc error
+    mov ah, 9
+    mov dx, offset error_msg
+    int 21h
+    jmp end_of_prog
+endp error
 
 
 
@@ -44,4 +57,4 @@ endp view
 
 
 data_buffer db 100 dup('$')
-data_filename db "..\..\Users\Cyber_User\Desktop\Documents\My_Docs\gitHubRepos\PasswordManager\data.txt", 0
+data_filename db "..\..\Users\Cyber_User\Desktop\Documents\My_Docs\gitHubRepos\PasswordManager\ata.txt", 0
